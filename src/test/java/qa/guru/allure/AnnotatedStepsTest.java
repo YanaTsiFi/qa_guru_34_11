@@ -1,6 +1,7 @@
 package qa.guru.allure;
 
 import io.qameta.allure.Step;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
@@ -13,11 +14,13 @@ public class AnnotatedStepsTest {
 
     @Test
     public void testIssueTitleWithAnnotations() {
-        openMainPage();
-        searchForRepository(REPO);
-        openRepository(REPO);
-        openIssuesTab();
-        shouldSeeIssueWithTitle(ISSUE_TITLE);
+        Allure.step("Проверка заголовка Issue с аннотациями", () -> {
+            openMainPage();
+            searchForRepository(REPO);
+            openRepository(REPO);
+            openIssuesTab();
+            shouldSeeIssueWithTitle(ISSUE_TITLE);
+        });
     }
 
     @Step("Открываем главную страницу GitHub")
@@ -43,7 +46,7 @@ public class AnnotatedStepsTest {
 
     @Step("Проверяем наличие Issue с заголовком '{title}'")
     public void shouldSeeIssueWithTitle(String title) {
-        System.out.println("Checking issue title: " + title);
+        Allure.addAttachment("Проверяемый заголовок Issue", title);
         $("#issues-tab").shouldHave(text("Issues"));
     }
 }
